@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  COLLABORATOR
+  CLIENT
+}
+
+enum TaskStatus {
+  FUTURE
+  TODAY
+  IN_PROGRESS
+  COMPLETED
+  PAST
+}
+
+enum Frequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum IntegrationType {
+  GITHUB
+  TRELLO
+  RENDER
+  NETLIFY
+}
+
+enum OAuthProvider {
+  GOOGLE
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(ADMIN)
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  companies      Company[]
+  recurringTasks RecurringTask[]
+  dailyTasks     DailyTask[]
+  reports        Report[]
+  integrations   Integration[]
+  accounts       Account[]
+}
+
+model Account {
+  id                 String         @id @default(uuid())
+  userId             String
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider           OAuthProvider
+  providerAccountId  String
+  accessToken        String?
+  refreshToken       String?
+  expiresAt          DateTime?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Company {
+  id          String   @id @default(uuid())
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String
+  colorHex    String   @default("#3498db")
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  recurringTasks RecurringTask[]
+  dailyTasks     DailyTask[]
+  reports        Report[]
+  integrations   Integration[]
+}
+
+model RecurringTask {
+  id           String    @id @default(uuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  title        String
+  description  String?
+  frequency    Frequency
+  estimatedMin Int       @default(30)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  generatedDaily DailyTask[]
+}
+
+model DailyTask {
+  id           String         @id @default(uuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?       @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  recurringId  String?
+  recurring    RecurringTask? @relation(fields: [recurringId], references: [id], onDelete: SetNull)
+  title        String
+  description  String?
+  status       TaskStatus     @default(FUTURE)
+  taskDate     DateTime
+  estimatedMin Int            @default(30)
+  actualMin    Int            @default(0)
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  timeLogs TimeLog[]
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([taskDate])
+  @@index([status])
+}
+
+model Report {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title        String
+  aiSummary    String?
+  periodStart  DateTime
+  periodEnd    DateTime
+  totalTasks   Int      @default(0)
+  totalMinutes Int      @default(0)
+  pdfPath      String?
+  generatedAt  DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([periodStart, periodEnd])
+}
+
+model TimeLog {
+  id          String    @id @default(uuid())
+  dailyTaskId String
+  dailyTask   DailyTask @relation(fields: [dailyTaskId], references: [id], onDelete: Cascade)
+  startTime   DateTime
+  endTime     DateTime?
+  durationMin Int?
+  notes       String?
+  createdAt   DateTime  @default(now())
+
+  @@index([dailyTaskId])
+  @@index([startTime])
+}
+
+model Integration {
+  id              String          @id @default(uuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId       String?
+  company         Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  integrationType IntegrationType
+  externalId      String?
+  configData      Json?
+  isActive        Boolean         @default(true)
+  lastSyncAt      DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([integrationType])
+}
