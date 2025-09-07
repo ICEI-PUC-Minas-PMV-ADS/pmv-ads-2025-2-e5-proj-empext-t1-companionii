@@ -47,7 +47,7 @@ npm run start:dev
 
 ## Roadmap (MVP)
 
-- [x] Auth JWT + RBAC
+- [x] Auth JWT + RBAC + OAuth Google
 - [x] CRUD básico Users
 - [ ] DailyTasks base + Scheduler meia-noite
 - [ ] RecurringTasks CRUD + autopopular em TODAY
@@ -58,6 +58,16 @@ npm run start:dev
 ## Licença
 
 MIT
+
+---
+
+## Google OAuth
+
+Inicie o fluxo no navegador:
+
+1. `GET http://localhost:3000/auth/google`
+
+2. Após login, você será redirecionado para OAUTH_SUCCESS_REDIRECT?token=... ou o token será retornado
 
 ---
 

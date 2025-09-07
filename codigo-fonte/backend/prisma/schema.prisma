@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/client"
 }
 
 datasource db {
@@ -42,12 +41,17 @@ enum IntegrationType {
   NETLIFY
 }
 
+enum OAuthProvider {
+  GOOGLE
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
   email        String   @unique
   passwordHash String
   role         Role     @default(ADMIN)
+  imageUrl     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -56,6 +60,23 @@ model User {
   dailyTasks     DailyTask[]
   reports        Report[]
   integrations   Integration[]
+  accounts       Account[]
+}
+
+model Account {
+  id                 String         @id @default(uuid())
+  userId             String
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider           OAuthProvider
+  providerAccountId  String
+  accessToken        String?
+  refreshToken       String?
+  expiresAt          DateTime?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Company {
