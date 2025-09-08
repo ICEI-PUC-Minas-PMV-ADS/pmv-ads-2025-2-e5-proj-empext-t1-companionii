@@ -61,6 +61,7 @@ model User {
   reports        Report[]
   integrations   Integration[]
   accounts       Account[]
+  passwordResets PasswordResetToken[]
 }
 
 model Account {
@@ -76,6 +77,19 @@ model Account {
   updatedAt          DateTime       @updatedAt
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String @unique
+  expiresAt DateTime
+  consumedAt DateTime?
+  createdAt DateTime @default(now())
+
+
   @@index([userId])
 }
 
