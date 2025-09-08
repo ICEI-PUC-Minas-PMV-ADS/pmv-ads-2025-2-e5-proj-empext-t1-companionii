@@ -69,6 +69,21 @@ Inicie o fluxo no navegador:
 
 2. Após login, você será redirecionado para OAUTH_SUCCESS_REDIRECT?token=... ou o token será retornado
 
+## Reset de senha - Fluxo Local
+
+> Teste com MailHog
+> `docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog`
+> Configure SMTP_HOST=localhost, SMTP_PORT=1025, SMTP_SECURE=false
+> Web UI: http://localhost:8025
+
+1. `POST /auth/forgot-password` → verifica e-mail no MailHog
+
+2. Abrir link `WEBAPP_RESET_URL?token=...`
+
+3. `POST /auth/reset-password` com `{ token, password }`
+
+4. Login normal com nova senha.
+
 ---
 
 ## 🧩 Extras

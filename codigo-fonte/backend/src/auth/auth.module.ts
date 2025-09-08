@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
+import { MailerModule } from '../mailer/mailer.module';
+import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
@@ -13,6 +14,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
     UsersModule,
     PassportModule,
     ConfigModule,
+    MailerModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       // eslint-disable-next-line @typescript-eslint/require-await

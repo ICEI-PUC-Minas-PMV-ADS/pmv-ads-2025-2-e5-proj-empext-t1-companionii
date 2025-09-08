@@ -18,6 +18,8 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UsersService } from '../users/users.service';
 import { GoogleAuthGuard } from '../common/guards/google.guard';
+import { ForgotPasswordDto } from './dto/forgot-password';
+import { ResetPasswordDto } from './dto/reset-password';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -45,6 +47,17 @@ export class AuthController {
       role: dto.role,
     });
     return { id: user.id, email: user.email };
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgot(@Body() dto: ForgotPasswordDto) {
+    return await this.auth.requestPasswordReset(dto.email);
+  }
+
+  @Post('reset-password')
+  async reset(@Body() dto: ResetPasswordDto) {
+    return await this.auth.resetPassword(dto.token, dto.password);
   }
 
   @Get('google')
