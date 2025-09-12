@@ -70,6 +70,10 @@ model Account {
   user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider           OAuthProvider
   providerAccountId  String
+  // TODO: Relation between Account and Company
+  // as described in Figma create account design
+  //companyId          String?
+  //company            Company?       @relation(fields: [companyId], references: [id], onDelete: SetNull)
   accessToken        String?
   refreshToken       String?
   expiresAt          DateTime?
