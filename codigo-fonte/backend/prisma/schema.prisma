@@ -20,6 +20,14 @@ enum Role {
   CLIENT
 }
 
+enum UserStatus {
+  INVITED
+  PENDING_APPROVAL
+  ACTIVE
+  SUSPENDED
+  DISABLED
+}
+
 enum TaskStatus {
   FUTURE
   TODAY
@@ -51,6 +59,7 @@ model User {
   email        String   @unique
   passwordHash String
   role         Role     @default(ADMIN)
+  status       UserStatus @default(ACTIVE)
   imageUrl     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -62,6 +71,7 @@ model User {
   integrations   Integration[]
   accounts       Account[]
   passwordResets PasswordResetToken[]
+  invites        Invite[] @relation("InvitedBy")
 }
 
 model Account {
@@ -70,10 +80,7 @@ model Account {
   user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider           OAuthProvider
   providerAccountId  String
-  // TODO: Relation between Account and Company
-  // as described in Figma create account design
-  //companyId          String?
-  //company            Company?       @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  
   accessToken        String?
   refreshToken       String?
   expiresAt          DateTime?
@@ -95,6 +102,23 @@ model PasswordResetToken {
 
 
   @@index([userId])
+}
+
+model Invite {
+  id          String @id @default(uuid())
+  email       String
+  role        Role @default(COLLABORATOR)
+  companyId   String?
+  invitedById String
+  invitedBy   User @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
+  tokenHash   String @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime @default(now())
+
+
+  @@index([email])
 }
 
 model Company {

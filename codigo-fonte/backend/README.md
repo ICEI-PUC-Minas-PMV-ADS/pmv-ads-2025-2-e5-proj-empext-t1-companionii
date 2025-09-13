@@ -49,8 +49,6 @@ npm run start:dev
 
 - [x] Auth JWT + RBAC + OAuth Google
 - [x] CRUD básico Users
-- [ ] DailyTasks base + Scheduler meia-noite
-- [ ] RecurringTasks CRUD + autopopular em TODAY
 - [ ] Relatórios (agregações e PDF)
 - [ ] Integração IA para resumo de período
 - [ ] Métricas
