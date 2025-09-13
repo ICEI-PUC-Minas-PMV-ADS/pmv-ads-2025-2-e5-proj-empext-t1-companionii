@@ -1,28 +1,28 @@
-import { UpdateDailyTasksDto } from 'src/dailyTasks/dto/update-dailyTaks.dto';
 import { IsString, IsNotEmpty } from 'class-validator';
+import { UpdateDailyTasksDto } from '../../dailyTasks/dto/update-dailyTaks.dto';
 
 export class CreateRecurringTasksDto {
   @IsNotEmpty()
-  userId    : string;
+  userId: string;
 
   @IsNotEmpty()
-  companyId : string;
-  
+  companyId: string;
+
   @IsString()
   @IsNotEmpty()
-  title     : string;
+  title: string;
 
   @IsString()
   @IsNotEmpty()
   description: string;
-  
+
   @IsString()
   @IsNotEmpty()
-  frequency : string;
+  frequency: string;
 
   estimatedMin: number;
 
-  isActive  : boolean;
+  isActive: boolean;
 
   generatedDaily: UpdateDailyTasksDto[] | [];
 }

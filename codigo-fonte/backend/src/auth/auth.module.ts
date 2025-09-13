@@ -17,12 +17,12 @@ import { GoogleStrategy } from './strategies/google.strategy';
     MailerModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       // eslint-disable-next-line @typescript-eslint/require-await
       useFactory: async (cfg: ConfigService) => ({
         secret: cfg.get<string>('JWT_SECRET'),
         signOptions: { expiresIn: cfg.get<string>('JWT_EXPIRES_IN') },
       }),
-      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],
