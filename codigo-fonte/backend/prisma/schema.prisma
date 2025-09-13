@@ -36,12 +36,6 @@ enum TaskStatus {
   PAST
 }
 
-enum Frequency {
-  DAILY
-  WEEKLY
-  MONTHLY
-}
-
 enum IntegrationType {
   GITHUB
   TRELLO
@@ -65,7 +59,6 @@ model User {
   updatedAt    DateTime @updatedAt
 
   companies      Company[]
-  recurringTasks RecurringTask[]
   dailyTasks     DailyTask[]
   reports        Report[]
   integrations   Integration[]
@@ -131,27 +124,9 @@ model Company {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  recurringTasks RecurringTask[]
   dailyTasks     DailyTask[]
   reports        Report[]
   integrations   Integration[]
-}
-
-model RecurringTask {
-  id           String    @id @default(uuid())
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  companyId    String?
-  company      Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  title        String
-  description  String?
-  frequency    Frequency
-  estimatedMin Int       @default(30)
-  isActive     Boolean   @default(true)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  generatedDaily DailyTask[]
 }
 
 model DailyTask {
@@ -160,8 +135,6 @@ model DailyTask {
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   companyId    String?
   company      Company?       @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  recurringId  String?
-  recurring    RecurringTask? @relation(fields: [recurringId], references: [id], onDelete: SetNull)
   title        String
   description  String?
   status       TaskStatus     @default(FUTURE)

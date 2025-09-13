@@ -1,4 +1,4 @@
-import { PrismaClient, Role, Frequency, TaskStatus } from '@prisma/client';
+import { PrismaClient, Role, TaskStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -29,22 +29,10 @@ async function main() {
     },
   });
 
-  const rec = await prisma.recurringTask.create({
-    data: {
-      userId: admin.id,
-      companyId: company.id,
-      title: 'Daily Standup',
-      description: 'Reunião rápida diária',
-      frequency: Frequency.DAILY,
-      estimatedMin: 15,
-    },
-  });
-
   await prisma.dailyTask.create({
     data: {
       userId: admin.id,
       companyId: company.id,
-      recurringId: rec.id,
       title: 'Configurar ambiente',
       description: 'Preparar repositório e CI/CD',
       status: TaskStatus.TODAY,
