@@ -1,4 +1,4 @@
-import { PrismaClient, Role, TaskStatus } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -26,18 +26,6 @@ async function main() {
       name: 'Empresa Exemplo',
       colorHex: '#8e44ad',
       description: 'Cliente de demonstração',
-    },
-  });
-
-  await prisma.dailyTask.create({
-    data: {
-      userId: admin.id,
-      companyId: company.id,
-      title: 'Configurar ambiente',
-      description: 'Preparar repositório e CI/CD',
-      status: TaskStatus.TODAY,
-      taskDate: new Date(),
-      estimatedMin: 60,
     },
   });
 
