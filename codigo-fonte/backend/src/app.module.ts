@@ -6,6 +6,9 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MailerModule } from './mailer/mailer.module';
 import { InvitesModule } from './invites/invites.module';
+import { ProjectsService } from './projects/projects.service';
+import { ProjectsModule } from './projects/projects.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -28,6 +31,9 @@ import { InvitesModule } from './invites/invites.module';
     UsersModule,
     MailerModule,
     InvitesModule,
+    ProjectsModule,
+    TasksModule,
   ],
+  providers: [ProjectsService],
 })
 export class AppModule {}

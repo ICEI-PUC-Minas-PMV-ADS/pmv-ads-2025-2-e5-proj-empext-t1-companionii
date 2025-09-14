@@ -14,9 +14,4 @@ export class CreateCompaniesDto {
 
   @IsString()
   description: string;
-
-  //   recurringTasks : RecurringTask[];
-  //   dailyTasks     : DailyTask[];
-  //   reports        : Report[];
-  //   integrations   : Integration[];
 }

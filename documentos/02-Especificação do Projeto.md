@@ -12,12 +12,11 @@ Sistema web híbrido kanban/diário com IA integrada que oferece organização t
 
 ## Usuário do Sistema
 
-| **Tipo de Usuário** | **Descrição** | **Responsabilidades** |
-|---------------------|---------------|----------------------|
+| **Tipo de Usuário**          | **Descrição**                                                       | **Responsabilidades**                                                                                                                                                              |
+| ---------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Desenvolvedor Freelancer** | Profissional autônomo que atende múltiplos clientes simultaneamente | Organizar tarefas diárias por cliente, controlar tempo trabalhado, gerar relatórios para prestação de contas, configurar tarefas recorrentes, acompanhar métricas de produtividade |
 
 ---
-
 
 ## Arquitetura e Tecnologias
 
@@ -35,71 +34,63 @@ Colocar a imagem do modelo construído apresentando a proposta de solução.
 
 **Técnica de priorização adotada: MoSCoW**
 
-* **Must (ALTA)**: imprescindível ao MVP e diretamente ligado aos critérios de sucesso (kanban Futuro|Hoje|Passado; recorrentes; resumos IA; relatórios por empresa; timer/horas).
-* **Should (MÉDIA)**: eleva valor e usabilidade (templates de relatório; filtros/identidade visual por label).
-* **Could (BAIXA)**: diferencia, mas não bloqueia MVP (integrações externas, métricas avançadas). 
+- **Must (ALTA)**: imprescindível ao MVP e diretamente ligado aos critérios de sucesso (kanban Futuro|Hoje|Passado; recorrentes; resumos IA; relatórios por empresa; timer/horas).
+- **Should (MÉDIA)**: eleva valor e usabilidade (templates de relatório; filtros/identidade visual por label).
+- **Could (BAIXA)**: diferencia, mas não bloqueia MVP (integrações externas, métricas avançadas).
 
 ### Requisitos Funcionais
 
-| ID | Descrição do Requisito | Prioridade |
-| -- | ---------------------- | ---------- |
-| RF-001 | Autenticação/Autorização com papéis (Proprietário, Admin, Colaborador, Cliente). | ALTA |
-| RF-002 | CRUD de Empresas/Labels com cor/identidade visual. | ALTA |
-| RF-003 | CRUD de Tarefas Diárias (título, empresa, estimativa, descrição). | ALTA |
-| RF-004 | Kanban temporal com colunas Futuro \| Hoje \| Passado e suporte a drag-and-drop. | ALTA |
-| RF-005 | Migração automática de tarefas de “Hoje” → “Passado” às 00h (scheduler). | ALTA |
-| RF-006 | Timer por tarefa (iniciar/pausar/finalizar) e rastreamento de horas. | ALTA |
-| RF-007 | Tarefas recorrentes via templates (diário/semanal/mensal). | ALTA |
-| RF-008 | Auto-população de recorrentes na coluna “Hoje” conforme cronograma. | ALTA |
-| RF-009 | Assistente IA: gerar resumos profissionais das tarefas concluídas no período. | ALTA |
-| RF-010 | Geração de relatórios por empresa/label (período selecionável). | ALTA |
-| RF-011 | Exportação em PDF dos relatórios com layout profissional. | ALTA |
-| RF-012 | Templates de relatório por empresa (branding e seções padrão). | MÉDIA |
-| RF-013 | Filtros/visões por empresa/label e por status (foco diário). | MÉDIA |
-| RF-014 | Onboarding guiado (setup inicial <10 min: empresas, labels, recorrentes). | MÉDIA |
-| RF-015 | Dashboard de métricas: tempo por empresa/tipo de tarefa, histórico semanal/mensal. | MÉDIA |
-| RF-016 | Histórico/auditoria de alterações de tarefa e tempo. | MÉDIA |
-| RF-017 | Integração GitHub: sincronizar commits/PRs como atividades. | BAIXA |
-| RF-018 | Integração Trello: importar cards como tarefas. | BAIXA |
-| RF-019 | Webhooks de deploy (Render/Netlify) exibidos no contexto das tarefas. | BAIXA |
-| RF-020 | Compartilhamento seguro de relatórios (link expira e/ou PDF). | BAIXA |
+| ID     | Descrição do Requisito                                                                        | Prioridade |
+| ------ | --------------------------------------------------------------------------------------------- | ---------- |
+| RF-001 | Autenticação/Autorização com papéis (Proprietário, Admin, Colaborador, Cliente).              | ALTA       |
+| RF-002 | CRUD de Empresas/Labels com cor/identidade visual.                                            | ALTA       |
+| RF-003 | CRUD de Tarefas Diárias (título, empresa, estimativa, descrição).                             | ALTA       |
+| RF-004 | Kanban com colunas A Fazer \| Revisão \| Em Progresso \| Concluído e suporte a drag-and-drop. | ALTA       |
+| RF-005 | Assistente IA: gerar resumos profissionais das tarefas concluídas no período.                 | ALTA       |
+| RF-006 | Geração de relatórios por empresa/label (período selecionável).                               | ALTA       |
+| RF-007 | Exportação em PDF dos relatórios com layout profissional.                                     | ALTA       |
+| RF-008 | Templates de relatório por empresa (branding e seções padrão).                                | MÉDIA      |
+| RF-009 | Filtros/visões por empresa/label e por status.                                                | MÉDIA      |
+| RF-010 | Dashboard de métricas: tempo por empresa/tipo de tarefa, histórico semanal/mensal.            | MÉDIA      |
+| RF-011 | Histórico/auditoria de alterações de tarefa e tempo.                                          | MÉDIA      |
+| RF-012 | Integração GitHub: sincronizar commits/PRs como atividades.                                   | BAIXA      |
+| RF-013 | Integração Trello: importar cards como tarefas.                                               | BAIXA      |
+| RF-014 | Compartilhamento seguro de relatórios (link expira e/ou PDF).                                 | BAIXA      |
 
 ### Requisitos não Funcionais
 
-| ID | Descrição do Requisito | Prioridade |
-| -- | ---------------------- | ---------- |
-| RNF-001 | Responsivo (desktop prioritário; uso confortável no mobile). | ALTA |
-| RNF-002 | Desempenho: carregar dashboard em <3s; operações CRUD <1s. | ALTA |
-| RNF-003 | Relatórios gerados em <10s; processamento de IA <15s. | ALTA |
-| RNF-004 | APIs RESTful; banco normalizado com relacionamentos corretos. | ALTA |
-| RNF-005 | Confiabilidade do scheduler de 00h (idempotente; tolerante a falhas). | ALTA |
-| RNF-006 | Segurança: autenticação, RBAC, proteção a injeção/CSRF/XSS, logs. | ALTA |
-| RNF-007 | Privacidade: relatórios segmentados por empresa; compartilhamento restrito. | ALTA |
-| RNF-008 | Auditoria: timestamps e trilhas de alterações de tempo/tarefa. | MÉDIA |
-| RNF-009 | Exportação de dados (CSV/PDF) garantida para portabilidade. | MÉDIA |
-| RNF-010 | Observabilidade: métricas e logs mínimos para diagnósticos. | MÉDIA |
-| RNF-011 | Acessibilidade: contraste/teclado/aria nas telas principais. | MÉDIA |
-| RNF-012 | Compatibilidade: Chrome/Firefox/Edge recentes. | BAIXA |
+| ID      | Descrição do Requisito                                                      | Prioridade |
+| ------- | --------------------------------------------------------------------------- | ---------- |
+| RNF-001 | Responsivo (desktop prioritário; uso confortável no mobile).                | ALTA       |
+| RNF-002 | Desempenho: carregar dashboard em <3s; operações CRUD <1s.                  | ALTA       |
+| RNF-003 | Relatórios gerados em <10s; processamento de IA <15s.                       | ALTA       |
+| RNF-004 | APIs RESTful; banco normalizado com relacionamentos corretos.               | ALTA       |
+| RNF-005 | Segurança: autenticação, RBAC, proteção a injeção/CSRF/XSS, logs.           | ALTA       |
+| RNF-006 | Privacidade: relatórios segmentados por empresa; compartilhamento restrito. | ALTA       |
+| RNF-007 | Auditoria: timestamps e trilhas de alterações de tempo/tarefa.              | MÉDIA      |
+| RNF-008 | Exportação de dados (PDF) garantida para portabilidade.                     | MÉDIA      |
+| RNF-009 | Observabilidade: métricas e logs mínimos para diagnósticos.                 | MÉDIA      |
+| RNF-010 | Acessibilidade: contraste/teclado/aria nas telas principais.                | MÉDIA      |
+| RNF-011 | Compatibilidade: Chrome/Firefox/Edge recentes.                              | BAIXA      |
 
 ## Restrições
 
 O projeto está restrito pelos itens apresentados na tabela a seguir.
 
-| ID | Restrição |
-| -- | --------- |
-| 01 | Prazo acadêmico: entregar MVP funcional até o fim do semestre. |
-| 02 | Escopo do MVP focado em: kanban temporal, recorrentes, timer, IA de resumos e relatório PDF por empresa. Integrações externas (GitHub/Trello/deploy) são Could (não bloqueiam entrega). |
-| 03 | Time de 6 pessoas, sem terceirização. Divisão por trilhas acima. |
-| 04 | Stack de referência (para manter consistência entre entregas): Frontend React; Backend Node.js/NestJS; SQL + Prisma; API de IA externa com prompt interno fixo. |
-| 05 | Custo zero/low-cost: uso de tiers gratuitos e serviços gerenciados mínimos; sem dados sensíveis de produção. |
-
+| ID  | Restrição                                                                                                                                                                               |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 01  | Prazo acadêmico: entregar MVP funcional até o fim do semestre.                                                                                                                          |
+| 02  | Escopo do MVP focado em: kanban temporal, recorrentes, timer, IA de resumos e relatório PDF por empresa. Integrações externas (GitHub/Trello/deploy) são Could (não bloqueiam entrega). |
+| 03  | Time de 6 pessoas, sem terceirização. Divisão por trilhas acima.                                                                                                                        |
+| 04  | Stack de referência (para manter consistência entre entregas): Frontend React; Backend Node.js/NestJS; SQL + Prisma; API de IA externa com prompt interno fixo.                         |
+| 05  | Custo zero/low-cost: uso de tiers gratuitos e serviços gerenciados mínimos; sem dados sensíveis de produção.                                                                            |
 
 ## Diagrama de Caso de Uso
 
 ![Diagrama de Caso de Uso](img/diagrama.png)
 
-
 > **Links Úteis**:
+>
 > - [Criando Casos de Uso](https://www.ibm.com/docs/pt-br/elm/6.0?topic=requirements-creating-use-cases)
 > - [Como Criar Diagrama de Caso de Uso: Tutorial Passo a Passo](https://gitmind.com/pt/fazer-diagrama-de-caso-uso.html/)
 > - [Lucidchart](https://www.lucidchart.com/)
@@ -114,19 +105,20 @@ A arquitetura adotada é baseada em uma plataforma em nuvem, que integra múltip
 
 Em termos gerais, a arquitetura é organizada nas seguintes camadas:
 
-- *Frontend/Clientes:* A camada responsável pela interação com o usuário, acessada por meio de navegadores ou aplicativos móveis.
+- _Frontend/Clientes:_ A camada responsável pela interação com o usuário, acessada por meio de navegadores ou aplicativos móveis.
 
-- *Backend:* Onde ocorrem o processamento das lógicas de negócio, a gestão dos dados e a integração com sistemas externos.
+- _Backend:_ Onde ocorrem o processamento das lógicas de negócio, a gestão dos dados e a integração com sistemas externos.
 
-- *Banco de Dados (SQL):* Armazena os dados estruturados da aplicação, assegurando integridade e alta performance nas consultas realizadas.
+- _Banco de Dados (SQL):_ Armazena os dados estruturados da aplicação, assegurando integridade e alta performance nas consultas realizadas.
 
-![Arquitetura da Solução](<./img/ArquiteturaInicial.png>)
+![Arquitetura da Solução](./img/ArquiteturaInicial.png)
 
 ## Modelo da Base de Dados
 
 # Para banco de dados relacional:
 
 # Sistema de Gestão Diária para Desenvolvedores
+
 ## Documentação da Base de Dados
 
 ---
@@ -154,24 +146,11 @@ erDiagram
         datetime updated_at
     }
 
-    RECURRING_TASKS {
-        int recurring_task_id PK
-        int user_id FK
-        int company_id FK
-        string title
-        string description
-        string frequency
-        int estimated_minutes
-        boolean is_active
-        datetime created_at
-        datetime updated_at
-    }
 
     DAILY_TASKS {
         int daily_task_id PK
         int user_id FK
         int company_id FK
-        int recurring_task_id FK
         string title
         string description
         string status
@@ -223,17 +202,14 @@ erDiagram
     }
 
     USERS ||--o{ COMPANIES : owns
-    USERS ||--o{ RECURRING_TASKS : creates
     USERS ||--o{ DAILY_TASKS : manages
     USERS ||--o{ REPORTS : generates
     USERS ||--o{ INTEGRATIONS : configures
 
-    COMPANIES ||--o{ RECURRING_TASKS : categorizes
     COMPANIES ||--o{ DAILY_TASKS : categorizes
     COMPANIES ||--o{ REPORTS : segments
     COMPANIES ||--o{ INTEGRATIONS : connects
 
-    RECURRING_TASKS ||--o{ DAILY_TASKS : generates
     DAILY_TASKS ||--o{ TIME_LOGS : tracks
 ```
 
@@ -259,6 +235,7 @@ CREATE INDEX idx_users_email ON users(email);
 **Descrição:** Armazena informações dos desenvolvedores que utilizam o sistema.
 
 **Campos:**
+
 - `user_id`: Chave primária, identificador único do usuário
 - `name`: Nome completo do usuário
 - `email`: Email único para autenticação
@@ -286,48 +263,12 @@ CREATE INDEX idx_companies_user_id ON companies(user_id);
 **Descrição:** Empresas/clientes dos desenvolvedores com identidade visual.
 
 **Campos:**
+
 - `company_id`: Chave primária, identificador único da empresa
 - `user_id`: Chave estrangeira para users
 - `name`: Nome da empresa/cliente
 - `color_hex`: Cor em hexadecimal para labels visuais
 - `description`: Descrição opcional da empresa
-- `created_at`: Data de criação
-- `updated_at`: Data da última atualização
-
-### 2.3 Tabela RECURRING_TASKS
-
-```sql
-CREATE TABLE recurring_tasks (
-    recurring_task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    company_id INTEGER,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    frequency ENUM('daily', 'weekly', 'monthly') NOT NULL,
-    estimated_minutes INTEGER DEFAULT 30,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE SET NULL
-);
-
-CREATE INDEX idx_recurring_tasks_user_id ON recurring_tasks(user_id);
-CREATE INDEX idx_recurring_tasks_company_id ON recurring_tasks(company_id);
-CREATE INDEX idx_recurring_tasks_frequency ON recurring_tasks(frequency);
-```
-
-**Descrição:** Templates de tarefas que se repetem automaticamente.
-
-**Campos:**
-- `recurring_task_id`: Chave primária
-- `user_id`: Chave estrangeira para users
-- `company_id`: Chave estrangeira para companies (opcional)
-- `title`: Título da tarefa recorrente
-- `description`: Descrição detalhada
-- `frequency`: Frequência de repetição (diária, semanal, mensal)
-- `estimated_minutes`: Tempo estimado em minutos
-- `is_active`: Flag para ativar/desativar a recorrência
 - `created_at`: Data de criação
 - `updated_at`: Data da última atualização
 
@@ -338,7 +279,6 @@ CREATE TABLE daily_tasks (
     daily_task_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     company_id INTEGER,
-    recurring_task_id INTEGER,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     status ENUM('future', 'today', 'in_progress', 'completed', 'past') DEFAULT 'future',
@@ -351,23 +291,21 @@ CREATE TABLE daily_tasks (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE SET NULL,
-    FOREIGN KEY (recurring_task_id) REFERENCES recurring_tasks(recurring_task_id) ON DELETE SET NULL
 );
 
 CREATE INDEX idx_daily_tasks_user_id ON daily_tasks(user_id);
 CREATE INDEX idx_daily_tasks_company_id ON daily_tasks(company_id);
 CREATE INDEX idx_daily_tasks_task_date ON daily_tasks(task_date);
 CREATE INDEX idx_daily_tasks_status ON daily_tasks(status);
-CREATE INDEX idx_daily_tasks_recurring_task_id ON daily_tasks(recurring_task_id);
 ```
 
 **Descrição:** Tarefas específicas organizadas no kanban temporal (Futuro | Hoje | Passado).
 
 **Campos:**
+
 - `daily_task_id`: Chave primária
 - `user_id`: Chave estrangeira para users
 - `company_id`: Chave estrangeira para companies
-- `recurring_task_id`: Referência para tarefa recorrente que originou esta (se aplicável)
 - `title`: Título da tarefa
 - `description`: Descrição detalhada
 - `status`: Status atual (future, today, in_progress, completed, past)
@@ -407,6 +345,7 @@ CREATE INDEX idx_reports_period ON reports(period_start, period_end);
 **Descrição:** Relatórios gerados automaticamente com resumos da IA por período e empresa.
 
 **Campos:**
+
 - `report_id`: Chave primária
 - `user_id`: Chave estrangeira para users
 - `company_id`: Chave estrangeira para companies (filtro por empresa)
@@ -441,6 +380,7 @@ CREATE INDEX idx_time_logs_start_time ON time_logs(start_time);
 **Descrição:** Registros detalhados de tempo por tarefa com timer integrado.
 
 **Campos:**
+
 - `time_log_id`: Chave primária
 - `daily_task_id`: Chave estrangeira para daily_tasks
 - `start_time`: Timestamp de início do timer
@@ -475,6 +415,7 @@ CREATE INDEX idx_integrations_type ON integrations(integration_type);
 **Descrição:** Configurações de integrações externas (GitHub, Trello, Deploy platforms).
 
 **Campos:**
+
 - `integration_id`: Chave primária
 - `user_id`: Chave estrangeira para users
 - `company_id`: Chave estrangeira para companies (opcional)
@@ -493,11 +434,8 @@ CREATE INDEX idx_integrations_type ON integrations(integration_type);
 ### 3.1 Relacionamentos Principais
 
 - **users → companies**: Um usuário pode ter várias empresas (1:N)
-- **users → recurring_tasks**: Um usuário pode criar várias tarefas recorrentes (1:N)
 - **users → daily_tasks**: Um usuário pode ter várias tarefas diárias (1:N)
-- **companies → recurring_tasks**: Uma empresa pode ter várias tarefas recorrentes (1:N)
 - **companies → daily_tasks**: Uma empresa pode ter várias tarefas diárias (1:N)
-- **recurring_tasks → daily_tasks**: Uma tarefa recorrente pode gerar várias tarefas diárias (1:N)
 - **daily_tasks → time_logs**: Uma tarefa diária pode ter vários logs de tempo (1:N)
 
 ### 3.2 Constraints de Integridade
@@ -512,11 +450,13 @@ CREATE INDEX idx_integrations_type ON integrations(integration_type);
 ## 4. Índices para Performance
 
 ### 4.1 Índices de Busca Frequente
+
 - `idx_users_email`: Busca rápida por email na autenticação
 - `idx_daily_tasks_task_date`: Filtros por data no kanban
 - `idx_daily_tasks_status`: Filtros por status (Futuro, Hoje, Passado)
 
 ### 4.2 Índices de Relacionamento
+
 - `idx_companies_user_id`: Busca empresas por usuário
 - `idx_daily_tasks_company_id`: Filtros por empresa nos relatórios
 - `idx_time_logs_daily_task_id`: Cálculo de tempo por tarefa
@@ -526,17 +466,18 @@ CREATE INDEX idx_integrations_type ON integrations(integration_type);
 ## 5. Considerações Técnicas
 
 ### 5.1 Migração Automática às 00h
+
 - Job scheduler atualiza `status` de 'today' para 'past' em `daily_tasks`
 - Trigger automático para popular tarefas recorrentes em 'today'
 
 ### 5.2 Cálculo de Métricas
+
 - Views materializadas para dashboard de produtividade
 - Agregações de tempo por empresa e tipo de tarefa
 - Histórico de produtividade semanal/mensal
 
 ### 5.3 Backup e Auditoria
+
 - Campos `created_at` e `updated_at` em todas as tabelas
 - Soft delete opcional via campo `deleted_at`
 - Logs de alterações para auditoria completa
-
-
