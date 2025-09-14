@@ -3,13 +3,16 @@
 <img width="789" height="566" alt="Captura de tela 2025-08-31 214404" src="https://github.com/user-attachments/assets/4c6dd776-5fde-4a80-b12b-2a23fef99085" />
 
 PITCH
+
 Uma plataforma web inteligente para desenvolvedores que unifica a gestão de tarefas, automatiza a criação de relatórios com IA e otimiza a prestação de contas a clientes, transformando a organização diária em produtividade profissional.
 
-POR QUÊ?
+
 JUSTIFICATIVAS
+
 Desenvolvedores (freelancers/pequenas equipes) carecem de uma ferramenta centralizada para gerir múltiplos projetos e clientes, levando à perda de tempo com tarefas administrativas e falta de clareza na alocação de esforço.
 
 OBJETIVO (SMART)
+
 Desenvolver e implantar um MVP funcional em 16 semanas, permitindo ao usuário organizar seu dia em menos de 3 minutos e gerar relatórios profissionais por cliente em menos de 20 segundos.
 
 BENEFÍCIOS
@@ -22,8 +25,9 @@ Redução do tempo gasto com tarefas administrativas.
 
 Insights sobre a distribuição de tempo entre projetos.
 
-O QUÊ?
+
 PRODUTO
+
 Um sistema web responsivo (foco em desktop) que funciona como um assistente pessoal para a organização do trabalho, combinando um kanban temporal com a automação de um assistente de IA para otimizar o fluxo de trabalho diário.
 
 REQUISITOS
