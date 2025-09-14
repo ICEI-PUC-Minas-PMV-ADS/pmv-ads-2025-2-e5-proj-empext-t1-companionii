@@ -1,7 +1,7 @@
 # Etapa 1 - Apresentação da proposta da Solução
 - Project Model Canvas:
 <img width="789" height="566" alt="Captura de tela 2025-08-31 214404" src="https://github.com/user-attachments/assets/4c6dd776-5fde-4a80-b12b-2a23fef99085" />
-PITCH
+- PITCH:
 Uma plataforma web inteligente para desenvolvedores que unifica a gestão de tarefas, automatiza a criação de relatórios com IA e otimiza a prestação de contas a clientes, transformando a organização diária em produtividade profissional.
 
 POR QUÊ?
