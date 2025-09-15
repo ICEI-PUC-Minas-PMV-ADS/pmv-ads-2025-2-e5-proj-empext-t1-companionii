@@ -20,19 +20,13 @@ export class MailerService {
     });
   }
 
-  private buildResetTemplate(url: string) {
-    const project = 'Companion';
-    const text = `Recuperação de senha — ${project}
-
-Acesse o link para criar uma nova senha: ${url}
-Se você não solicitou, ignore este e-mail.`;
-
-    const html = `<!DOCTYPE html>
+  private shell(htmlContent: string, title: string) {
+    return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recuperação de senha</title>
+  <title>${title}</title>
   <style>
     /* Mobile-first */
     body{margin:0;background:#f6f9fc;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial}
@@ -57,33 +51,52 @@ Se você não solicitou, ignore este e-mail.`;
   <div class="wrapper">
     <div class="card">
       <div class="header">
-        <div class="brand">${project}</div>
-        <div style="opacity:.9;margin-top:6px">Recuperação de senha</div>
+        <div class="brand">Companion</div>
+        <div style="opacity:.9;margin-top:6px">${title}</div>
       </div>
-      <div class="content">
-        <p>Recebemos uma solicitação para redefinir sua senha.</p>
-        <p>Para continuar, clique no botão abaixo. Este link expira em 30 minutos.</p>
-        <p style="margin:20px 0"><a class="btn" href="${url}">Criar nova senha</a></p>
-        <p class="muted">Se você não solicitou esta ação, ignore este e-mail.</p>
-      </div>
-      <div class="footer">© ${new Date().getFullYear()} ${project}. Todos os direitos reservados.</div>
+      <div class="content">${htmlContent}</div>
+      <div class="footer">© ${new Date().getFullYear()} Companion. Todos os direitos reservados.</div>
     </div>
   </div>
 </body>
 </html>`;
-
-    return { text, html };
   }
 
   async sendPasswordReset(to: string, url: string) {
     const from = this.cfg.get<string>('MAIL_FROM');
-    const { text, html } = this.buildResetTemplate(url);
+    const html = this.shell(
+      `
+<p>Recebemos uma solicitação para redefinir sua senha.</p>
+<p>Para continuar, clique no botão abaixo. Este link expira em breve.</p>
+<p style="margin:20px 0"><a class="btn" href="${url}">Criar nova senha</a></p>
+<p class="muted">Se você não solicitou esta ação, ignore este e-mail.</p>
+`,
+      'Recuperação de senha',
+    );
 
     await this.transporter.sendMail({
       from,
       to,
       subject: 'Redefinição de senha',
-      text,
+      html,
+    });
+  }
+
+  async sendInvite(to: string, url: string) {
+    const from = this.cfg.get<string>('MAIL_FROM');
+    const html = this.shell(
+      `
+<p>Você foi convidado para acessar o Companion.</p>
+<p>Para criar sua conta, clique no botão abaixo. O convite expira em breve.</p>
+<p style="margin:20px 0"><a class="btn" href="${url}">Aceitar convite</a></p>
+<p class="muted">Se você não reconhece este convite, ignore este e-mail.</p>
+`,
+      'Convite de acesso',
+    );
+    await this.transporter.sendMail({
+      from,
+      to,
+      subject: 'Convite para acesso',
       html,
     });
   }

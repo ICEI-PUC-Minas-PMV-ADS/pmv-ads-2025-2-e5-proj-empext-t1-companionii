@@ -1,8 +1,9 @@
 import { Transform } from 'class-transformer';
 import { IsString, IsStrongPassword } from 'class-validator';
 
-export class ResetPasswordDto {
+export class AcceptInviteDto {
   @IsString() token: string;
+  @IsString() name: string;
 
   @Transform(({ value }) => value?.trim())
   @IsString()

@@ -12,21 +12,19 @@ import {
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
-import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
-import { UsersService } from '../users/users.service';
 import { GoogleAuthGuard } from '../common/guards/google.guard';
 import { ForgotPasswordDto } from './dto/forgot-password';
 import { ResetPasswordDto } from './dto/reset-password';
+import { AcceptInviteDto } from './dto/accept-invite.dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private auth: AuthService,
-    private users: UsersService,
     private cfg: ConfigService,
   ) {}
 
@@ -37,19 +35,8 @@ export class AuthController {
     return this.auth.sign({ id: user.id, email: user.email, role: user.role });
   }
 
-  @Post('register')
-  async register(@Body() dto: RegisterDto) {
-    const passwordHash = await bcrypt.hash(dto.password, 10);
-    const user = await this.users.create({
-      name: dto.name,
-      email: dto.email,
-      passwordHash,
-      role: dto.role,
-    });
-    return { id: user.id, email: user.email };
-  }
-
   @Post('forgot-password')
+  @UseGuards(ThrottlerGuard)
   @HttpCode(HttpStatus.OK)
   async forgot(@Body() dto: ForgotPasswordDto) {
     return await this.auth.requestPasswordReset(dto.email);
@@ -58,6 +45,21 @@ export class AuthController {
   @Post('reset-password')
   async reset(@Body() dto: ResetPasswordDto) {
     return await this.auth.resetPassword(dto.token, dto.password);
+  }
+
+  @Post('accept-invite')
+  @UseGuards(ThrottlerGuard)
+  async acceptInvite(@Body() dto: AcceptInviteDto, @Res() res: Response) {
+    const token = await this.auth.acceptInvite(
+      dto.token,
+      dto.name,
+      dto.password,
+    );
+    const redirect = this.cfg.get<string>('INVITE_SUCCESS_REDIRECT');
+    if (redirect) {
+      return res.redirect(`${redirect}?token=${token.access_token}`);
+    }
+    return res.json(token);
   }
 
   @Get('google')
