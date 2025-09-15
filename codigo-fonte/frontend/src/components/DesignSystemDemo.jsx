@@ -179,5 +179,5 @@ export default function DesignSystemDemo() {
         </div>
       </section>
     </div>
-  )
+  );
 }
