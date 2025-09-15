@@ -24,7 +24,8 @@ Descreva brevemente a arquitetura definida para o projeto e as tecnologias a ser
 
 ## Project Model Canvas
 
-Captura de tela 2025-08-31 214404
+<img width="789" height="566" alt="Captura de tela 2025-08-31 214404" src="https://github.com/user-attachments/assets/87e67bfc-63d8-4b7e-983e-409d8d7eb9e5" />
+
 PITCH
 Uma plataforma web inteligente para desenvolvedores que unifica a gestão de tarefas, automatiza a criação de relatórios com IA e otimiza a prestação de contas a clientes, transformando a organização diária em produtividade profissional.
 
