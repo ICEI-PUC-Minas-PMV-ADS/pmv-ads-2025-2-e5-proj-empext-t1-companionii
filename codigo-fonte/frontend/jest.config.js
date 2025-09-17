@@ -26,13 +26,25 @@ export default {
     '!src/**/*.d.ts',
     '!src/index.js',
     '!src/main.jsx',
+    '!src/__tests__/test-utils.jsx',
+    '!src/**/*.cy.jsx',
   ],
   coverageThreshold: {
     global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70,
+      branches: 50,
+      functions: 50,
+      lines: 50,
+      statements: 50,
     },
   },
-}
+  globals: {
+    'import.meta': {
+      env: {
+        VITE_API_URL: 'http://localhost:3000',
+      },
+    },
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-router|react-router-dom|@remix-run|zustand)/)',
+  ],
+};

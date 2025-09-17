@@ -1,0 +1,14 @@
+{
+  "user": {
+    "id": 3,
+    "name": "Google User",
+    "email": "googleuser@example.com",
+    "emailVerified": true,
+    "avatar": "https://lh3.googleusercontent.com/mock-avatar",
+    "provider": "google",
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.google.mock.token",
+  "refreshToken": "google.refresh.token.mock",
+  "expiresIn": 3600
+}

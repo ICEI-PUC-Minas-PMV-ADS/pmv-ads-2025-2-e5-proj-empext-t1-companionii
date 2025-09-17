@@ -1,17 +1,17 @@
 // Import component testing support
-import { mount } from 'cypress/react'
+import { mount } from 'cypress/react';
 
 // Import global styles for component testing
-import '../../src/index.css'
+import '../../src/index.css';
 
 // Custom mount command with default providers/wrappers
 Cypress.Commands.add('mount', (component, options = {}) => {
-  const { routerProps: _routerProps = {}, ...mountOptions } = options
+  const { routerProps: _routerProps = {}, ...mountOptions } = options;
 
-  const wrapped = component
+  const wrapped = component;
 
-  return mount(wrapped, mountOptions)
-})
+  return mount(wrapped, mountOptions);
+});
 
 // Example of how to wrap with providers
 // Cypress.Commands.add('mount', (component, options = {}) => {

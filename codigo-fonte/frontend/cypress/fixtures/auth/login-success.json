@@ -1,0 +1,13 @@
+{
+  "user": {
+    "id": 1,
+    "name": "Test User",
+    "email": "test@example.com",
+    "emailVerified": true,
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.token",
+  "refreshToken": "refresh.token.mock",
+  "expiresIn": 3600
+}
