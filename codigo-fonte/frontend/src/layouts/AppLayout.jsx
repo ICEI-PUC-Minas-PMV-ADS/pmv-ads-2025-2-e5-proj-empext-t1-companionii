@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { Logo, Button } from '../components/ui';
 import { useAuthStore } from '../stores/authStore';
 
 const AppLayout = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout } = useAuthStore();
+ 
+  const {  logout } = useAuthStore();
 
   const handleLogout = async () => {
     await logout();
@@ -20,16 +19,16 @@ const AppLayout = ({ children }) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              {user && (
+            
                 <>
                   <span className="text-body-medium text-gray-700">
-                    Bem-vindo, {user.name || user.email}
+                    Bem-vindo
                   </span>
                   <Button variant="outline" size="small" onClick={handleLogout}>
                     Sair
                   </Button>
                 </>
-              )}
+         
             </div>
           </div>
         </div>

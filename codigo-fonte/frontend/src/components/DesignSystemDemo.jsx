@@ -1,7 +1,6 @@
 export default function DesignSystemDemo() {
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-12">
-      {/* Typography Section */}
       <section>
         <h2 className="text-heading-2 mb-6">Typography System</h2>
         <div className="space-y-4">
@@ -22,11 +21,9 @@ export default function DesignSystemDemo() {
         </div>
       </section>
 
-      {/* Color Palette Section */}
       <section>
         <h2 className="text-heading-2 mb-6">Color Palette</h2>
 
-        {/* Primary Colors */}
         <div className="mb-8">
           <h3 className="text-heading-4 mb-4">Primary Colors</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -58,7 +55,6 @@ export default function DesignSystemDemo() {
           </div>
         </div>
 
-        {/* Semantic Colors */}
         <div className="mb-8">
           <h3 className="text-heading-4 mb-4">Semantic Colors</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -85,7 +81,6 @@ export default function DesignSystemDemo() {
           </div>
         </div>
 
-        {/* Gray Scale */}
         <div>
           <h3 className="text-heading-4 mb-4">Gray Scale</h3>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
@@ -117,11 +112,9 @@ export default function DesignSystemDemo() {
         </div>
       </section>
 
-      {/* Components Section */}
       <section>
         <h2 className="text-heading-2 mb-6">Components</h2>
 
-        {/* Buttons */}
         <div className="mb-8">
           <h3 className="text-heading-4 mb-4">Buttons</h3>
           <div className="flex flex-wrap gap-4">
@@ -131,7 +124,6 @@ export default function DesignSystemDemo() {
           </div>
         </div>
 
-        {/* Cards */}
         <div className="mb-8">
           <h3 className="text-heading-4 mb-4">Cards</h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -150,7 +142,6 @@ export default function DesignSystemDemo() {
           </div>
         </div>
 
-        {/* Inputs */}
         <div className="mb-8">
           <h3 className="text-heading-4 mb-4">Input Fields</h3>
           <div className="max-w-md space-y-4">
@@ -167,7 +158,6 @@ export default function DesignSystemDemo() {
           </div>
         </div>
 
-        {/* Status Badges */}
         <div>
           <h3 className="text-heading-4 mb-4">Status Badges</h3>
           <div className="flex flex-wrap gap-3">

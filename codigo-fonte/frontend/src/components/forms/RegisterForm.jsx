@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { useAuthStore } from '../../stores/authStore';
 import { useToast } from '../../hooks/useToast';
 
 const RegisterForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
   const { register: registerUser, isLoading } = useAuthStore();
   const { toast } = useToast();
@@ -32,7 +32,7 @@ const RegisterForm = () => {
 
   const password = watch('password');
 
-  // Real-time password strength check
+
   const passwordStrength = useMemo(() => {
     if (!password) return null;
     return checkPasswordStrength(password);
@@ -51,7 +51,7 @@ const RegisterForm = () => {
     } catch (error) {
       console.error('Registration error:', error);
 
-      // Handle specific error cases
+  
       if (
         error.message.includes('already exists') ||
         error.message.includes('409')
@@ -100,7 +100,6 @@ const RegisterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Name field */}
       <Input
         label="Nome completo"
         type="text"
@@ -109,9 +108,9 @@ const RegisterForm = () => {
         {...register('name')}
         autoComplete="name"
         autoFocus
+        data-testid="name-input"
       />
 
-      {/* Email field */}
       <Input
         label="Endereço de email"
         type="email"
@@ -119,9 +118,10 @@ const RegisterForm = () => {
         error={errors.email?.message}
         {...register('email')}
         autoComplete="email"
+        data-testid="email-input"
       />
 
-      {/* Password field with strength indicator */}
+  
       <div>
         <Input
           label="Senha"
@@ -131,9 +131,10 @@ const RegisterForm = () => {
           showPasswordToggle={true}
           {...register('password')}
           autoComplete="new-password"
+          data-testid="password-input"
         />
 
-        {/* Password strength indicator */}
+     
         {password && passwordStrength && (
           <div className="mt-2">
             <div className="flex items-center space-x-2 mb-1">
@@ -164,7 +165,7 @@ const RegisterForm = () => {
         )}
       </div>
 
-      {/* Confirm password field */}
+   
       <Input
         label="Confirmar senha"
         type="password"
@@ -172,9 +173,10 @@ const RegisterForm = () => {
         error={errors.confirmPassword?.message}
         {...register('confirmPassword')}
         autoComplete="new-password"
+        data-testid="confirm-password-input"
       />
 
-      {/* Terms and conditions checkbox */}
+  
       <Checkbox
         label={
           <span>
@@ -196,18 +198,20 @@ const RegisterForm = () => {
         }
         error={errors.acceptTerms?.message}
         {...register('acceptTerms')}
+        data-testid="terms-checkbox"
       />
 
-      {/* Submit button */}
+   
       <Button
         type="submit"
         className="w-full"
         loading={isSubmitting || isLoading}
+        data-testid="register-button"
       >
         {isSubmitting || isLoading ? 'Criando conta...' : 'Criar conta'}
       </Button>
 
-      {/* Sign in link */}
+ 
       <div className="text-center">
         <span className="text-body-medium text-gray-600">
           Já tem uma conta?{' '}

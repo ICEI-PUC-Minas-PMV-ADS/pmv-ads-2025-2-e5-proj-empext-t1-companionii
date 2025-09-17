@@ -34,16 +34,73 @@ Cypress.Commands.add(
   },
 );
 
-// Command to login (example for when auth is implemented)
+// Command to login using data-testid selectors
 Cypress.Commands.add(
   'login',
   (email = 'test@example.com', password = 'password123') => {
     cy.visit('/login');
-    cy.get('[data-testid="email-input"]').type(email);
-    cy.get('[data-testid="password-input"]').type(password);
-    cy.get('[data-testid="login-button"]').click();
+    cy.getByTestId('email-input').type(email);
+    cy.getByTestId('password-input').type(password);
+    cy.getByTestId('login-button').click();
   },
 );
+
+// Command to register a new user
+Cypress.Commands.add(
+  'register',
+  (
+    name = 'Test User',
+    email = 'test@example.com',
+    password = 'password123',
+  ) => {
+    cy.visit('/register');
+    cy.getByTestId('name-input').type(name);
+    cy.getByTestId('email-input').type(email);
+    cy.getByTestId('password-input').type(password);
+    cy.getByTestId('confirm-password-input').type(password);
+    cy.getByTestId('terms-checkbox').check();
+    cy.getByTestId('register-button').click();
+  },
+);
+
+// Command to reset password
+Cypress.Commands.add('resetPassword', (email = 'test@example.com') => {
+  cy.visit('/forgot-password');
+  cy.getByTestId('email-input').type(email);
+  cy.getByTestId('reset-password-button').click();
+});
+
+// Command to mock authentication state
+Cypress.Commands.add('mockAuth', (user = null) => {
+  const defaultUser = {
+    id: 1,
+    name: 'Test User',
+    email: 'test@example.com',
+    emailVerified: true,
+    createdAt: new Date().toISOString(),
+  };
+
+  const mockAuthState = {
+    state: {
+      user: user || defaultUser,
+      token: 'mock-token',
+      refreshToken: 'mock-refresh-token',
+      isAuthenticated: true,
+    },
+    version: 0,
+  };
+
+  cy.window().then(win => {
+    win.localStorage.setItem('auth-storage', JSON.stringify(mockAuthState));
+  });
+});
+
+// Command to clear authentication state
+Cypress.Commands.add('clearAuth', () => {
+  cy.window().then(win => {
+    win.localStorage.removeItem('auth-storage');
+  });
+});
 
 // Command to check accessibility
 Cypress.Commands.add('checkA11y', () => {

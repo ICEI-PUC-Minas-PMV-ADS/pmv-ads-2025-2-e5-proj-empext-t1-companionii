@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'react-router-dom';
@@ -61,7 +60,7 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Email field */}
+  
       <Input
         label="Endereço de email"
         type="email"
@@ -70,9 +69,10 @@ const LoginForm = () => {
         {...register('email')}
         autoComplete="email"
         autoFocus
+        data-testid="email-input"
       />
 
-      {/* Password field */}
+  
       <Input
         label="Senha"
         type="password"
@@ -81,9 +81,10 @@ const LoginForm = () => {
         showPasswordToggle={true}
         {...register('password')}
         autoComplete="current-password"
+        data-testid="password-input"
       />
 
-      {/* Remember me checkbox */}
+  
       <div className="flex items-center justify-between">
         <Checkbox label="Lembrar de mim" {...register('rememberMe')} />
         <Link
@@ -94,17 +95,18 @@ const LoginForm = () => {
         </Link>
       </div>
 
-      {/* Submit button */}
+ 
       <Button
         type="submit"
         className="w-full"
         loading={isSubmitting || isLoading}
         disabled={isRateLimited()}
+        data-testid="login-button"
       >
         {isSubmitting || isLoading ? 'Entrando...' : 'Entrar'}
       </Button>
 
-      {/* Google OAuth button */}
+     
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300" />
@@ -120,6 +122,7 @@ const LoginForm = () => {
         className="w-full"
         onClick={handleGoogleLogin}
         disabled={isSubmitting || isLoading}
+        data-testid="google-login-button"
       >
         <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
           <path
@@ -142,7 +145,7 @@ const LoginForm = () => {
         Continuar com Google
       </Button>
 
-      {/* Sign up link */}
+  
       <div className="text-center">
         <span className="text-body-medium text-gray-600">
           Não tem uma conta?{' '}

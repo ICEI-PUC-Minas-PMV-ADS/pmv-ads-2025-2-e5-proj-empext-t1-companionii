@@ -37,7 +37,6 @@ const SkynetIcon = ({ size = '32' }) => {
         </filter>
       </defs>
 
-      {/* Background circle */}
       <circle
         cx="100"
         cy="100"
@@ -47,7 +46,6 @@ const SkynetIcon = ({ size = '32' }) => {
         strokeWidth="2"
       />
 
-      {/* Outer ring segments */}
       <g stroke="#ff4444" strokeWidth="3" fill="none" filter="url(#glow)">
         <path d="M 100 20 A 80 80 0 0 1 156.57 56.57" opacity="0.9" />
         <path d="M 156.57 143.43 A 80 80 0 0 1 100 180" opacity="0.7" />
@@ -55,17 +53,13 @@ const SkynetIcon = ({ size = '32' }) => {
         <path d="M 43.43 56.57 A 80 80 0 0 1 100 20" opacity="0.6" />
       </g>
 
-      {/* Central neural network pattern */}
       <g stroke="#ff4444" strokeWidth="2" fill="none" opacity="0.8">
-        {/* Main cross lines */}
         <line x1="100" y1="60" x2="100" y2="140" />
         <line x1="60" y1="100" x2="140" y2="100" />
 
-        {/* Diagonal connections */}
         <line x1="75" y1="75" x2="125" y2="125" />
         <line x1="125" y1="75" x2="75" y2="125" />
 
-        {/* Network nodes */}
         <circle cx="100" cy="75" r="4" fill="#ff4444" />
         <circle cx="100" cy="125" r="4" fill="#ff4444" />
         <circle cx="75" cy="100" r="4" fill="#ff4444" />
@@ -76,7 +70,6 @@ const SkynetIcon = ({ size = '32' }) => {
         <circle cx="115" cy="115" r="3" fill="#ff6666" />
       </g>
 
-      {/* Central core eye */}
       <circle
         cx="100"
         cy="100"
@@ -87,7 +80,6 @@ const SkynetIcon = ({ size = '32' }) => {
       <circle cx="100" cy="100" r="12" fill="#ff0000" opacity="0.9" />
       <circle cx="100" cy="100" r="6" fill="#ffffff" opacity="0.3" />
 
-      {/* Scanning lines */}
       <g stroke="#ff4444" strokeWidth="1" opacity="0.4">
         <line x1="30" y1="70" x2="170" y2="70">
           <animate
@@ -113,7 +105,6 @@ const SkynetIcon = ({ size = '32' }) => {
         </line>
       </g>
 
-      {/* Corner connection points */}
       <g fill="#ff4444" opacity="0.7">
         <rect x="25" y="25" width="6" height="6" transform="rotate(45 28 28)" />
         <rect
@@ -139,7 +130,6 @@ const SkynetIcon = ({ size = '32' }) => {
         />
       </g>
 
-      {/* Pulsing outer glow */}
       <circle
         cx="100"
         cy="100"

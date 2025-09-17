@@ -62,7 +62,6 @@ const ForgotPasswordForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Email field */}
         <Input
           label="Endereço de email"
           type="email"
@@ -71,20 +70,20 @@ const ForgotPasswordForm = () => {
           {...register('email')}
           autoComplete="email"
           autoFocus
+          data-testid="email-input"
         />
 
-        {/* Submit button */}
         <Button
           type="submit"
           className="w-full"
           loading={isSubmitting || isLoading}
+          data-testid="reset-password-button"
         >
           {isSubmitting || isLoading
             ? 'Enviando...'
             : 'Enviar link de redefinição'}
         </Button>
 
-        {/* Back to login link */}
         <div className="text-center">
           <Link
             to="/login"
@@ -95,7 +94,6 @@ const ForgotPasswordForm = () => {
         </div>
       </form>
 
-      {/* Additional help */}
       <div className="mt-8 p-4 bg-gray-50 rounded-lg">
         <h3 className="text-body-medium font-medium text-gray-900 mb-2">
           Tendo problemas?
