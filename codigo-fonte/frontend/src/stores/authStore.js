@@ -8,7 +8,7 @@ const useAuthStore = create(
       // State
       user: null,
       token: null,
-      refreshToken: null,
+      rToken: null,
       isLoading: false,
       isAuthenticated: false,
       loginAttempts: 0,
@@ -19,12 +19,12 @@ const useAuthStore = create(
         set({ isLoading: true });
         try {
           const response = await authService.login(credentials);
-          const { user, token, refreshToken } = response;
+          const { user, token, refreshToken: rToken } = response;
 
           set({
             user,
             token,
-            refreshToken,
+            rToken,
             isAuthenticated: true,
             isLoading: false,
             loginAttempts: 0,

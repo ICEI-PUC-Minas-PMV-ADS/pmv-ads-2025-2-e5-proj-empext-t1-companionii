@@ -2,10 +2,6 @@ describe('Authentication Flow', () => {
   beforeEach(() => {
     // Clear any existing auth state
     cy.clearAuth();
-
-    // Intercept auth requests to prevent actual submission during validation tests
-    cy.intercept('POST', '**/auth/login', { statusCode: 400, body: { message: 'Test intercepted' } }).as('loginRequest');
-    cy.intercept('POST', '**/auth/forgot-password', { statusCode: 400, body: { message: 'Test intercepted' } }).as('forgotPasswordRequest');
   });
 
   describe('Login Page', () => {
@@ -35,6 +31,12 @@ describe('Authentication Flow', () => {
     });
 
     it('validates email format', () => {
+      // Intercept login requests for this validation test
+      cy.intercept('POST', '**/auth/login', {
+        statusCode: 400,
+        body: { message: 'Validation test' }
+      }).as('loginRequest');
+
       cy.get('[data-testid="email-input"]').type('invalid-email');
       cy.get('[data-testid="login-button"]').click();
 
@@ -43,13 +45,22 @@ describe('Authentication Flow', () => {
       cy.url().should('include', '/login');
 
       // Check that the email field still has the invalid value
-      cy.get('[data-testid="email-input"]').should('have.value', 'invalid-email');
+      cy.get('[data-testid="email-input"]').should(
+        'have.value',
+        'invalid-email',
+      );
 
       // The validation should prevent the login request from being made
       cy.get('@loginRequest.all').should('have.length', 0);
     });
 
     it('validates password length', () => {
+      // Intercept login requests for this validation test
+      cy.intercept('POST', '**/auth/login', {
+        statusCode: 400,
+        body: { message: 'Validation test' }
+      }).as('loginRequest');
+
       cy.get('[data-testid="email-input"]').type('test@example.com');
       cy.get('[data-testid="password-input"]').type('123');
       cy.get('[data-testid="login-button"]').click();
@@ -165,10 +176,19 @@ describe('Authentication Flow', () => {
     it('displays forgot password form correctly', () => {
       cy.contains('Redefinir sua senha').should('be.visible');
       cy.get('[placeholder="Digite seu email"]').should('be.visible');
-      cy.get('button[type="submit"]').should('contain', 'Enviar link de redefinição');
+      cy.get('button[type="submit"]').should(
+        'contain',
+        'Enviar link de redefinição',
+      );
     });
 
     it('validates email field', () => {
+      // Intercept forgot password requests for this validation test
+      cy.intercept('POST', '**/auth/forgot-password', {
+        statusCode: 400,
+        body: { message: 'Validation test' }
+      }).as('forgotPasswordRequest');
+
       // Test with empty email
       cy.get('[data-testid="reset-password-button"]').click();
       cy.wait(500);
@@ -180,7 +200,10 @@ describe('Authentication Flow', () => {
       cy.get('[data-testid="reset-password-button"]').click();
       cy.wait(500);
       cy.url().should('include', '/forgot-password');
-      cy.get('[data-testid="email-input"]').should('have.value', 'invalid-email');
+      cy.get('[data-testid="email-input"]').should(
+        'have.value',
+        'invalid-email',
+      );
       cy.get('@forgotPasswordRequest.all').should('have.length', 0);
 
       // Test with valid email format should allow submission
@@ -204,12 +227,13 @@ describe('Authentication Flow', () => {
     });
 
     it('allows access to dashboard when authenticated', () => {
-      // Mock authenticated state
-      cy.mockAuth({ id: 1, name: 'John Doe', email: 'john@example.com' });
+      // Login with seed credentials (cy.login already waits for navigation)
+      cy.login('admin@local.com', 'admin123');
 
-      cy.visit('/dashboard');
-      cy.url().should('include', '/dashboard');
-      cy.contains('Bem-vindo ao Companion').should('be.visible');
+      // Verify the welcome message is visible
+      cy.contains('Bem-vindo ao Companion', { timeout: 10000 }).should(
+        'be.visible',
+      );
     });
   });
 

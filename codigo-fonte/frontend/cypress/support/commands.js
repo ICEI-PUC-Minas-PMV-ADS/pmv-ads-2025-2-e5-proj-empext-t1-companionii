@@ -42,6 +42,9 @@ Cypress.Commands.add(
     cy.getByTestId('email-input').type(email);
     cy.getByTestId('password-input').type(password);
     cy.getByTestId('login-button').click();
+
+    // Wait for login to complete and redirect to dashboard
+    cy.url().should('include', '/dashboard', { timeout: 10000 });
   },
 );
 
