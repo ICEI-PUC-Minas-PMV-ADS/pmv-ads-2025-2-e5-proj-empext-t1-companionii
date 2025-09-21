@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ata de Reunião - Editor</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #333;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+      input,
+      textarea {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-family: inherit;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 60px;
+      }
+      .participants-row input {
+        width: calc(33.33% - 10px);
+        display: inline-block;
+        margin-right: 5px;
+      }
+      .print-btn {
+        background: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+      .print-btn:hover {
+        background: #0056b3;
+      }
+      @media print {
+        .print-btn {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="print-btn" onclick="window.print()">
+        Imprimir/Salvar PDF
+      </button>
+
+      <table>
+        <tr>
+          <th colspan="4">Ata de Reunião</th>
+        </tr>
+        <tr>
+          <td><strong>Data:</strong></td>
+          <td colspan="3"><input type="date" id="date" value="" /></td>
+        </tr>
+        <tr>
+          <td><strong>Hora:</strong></td>
+          <td colspan="3"><input type="time" id="time" value="" /></td>
+        </tr>
+        <tr>
+          <td><strong>Local:</strong></td>
+          <td colspan="3">
+            <input type="text" id="location" placeholder="Local da reunião" />
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th colspan="4">Participantes</th>
+        </tr>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Papel</th>
+          <th>Ação</th>
+        </tr>
+        <tbody id="participants">
+          <tr>
+            <td>
+              <input
+                type="text"
+                placeholder="Nome completo"
+              />
+            </td>
+            <td><input type="email" placeholder="email@exemplo.com" /></td>
+            <td><input type="text" placeholder="Função/Papel" /></td>
+            <td><button onclick="removeRow(this)">Remover</button></td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="text"
+                placeholder="Nome completo"
+              />
+            </td>
+            <td><input type="email" placeholder="email@exemplo.com" /></td>
+            <td>
+              <input type="text" placeholder="Função/Papel" />
+            </td>
+            <td><button onclick="removeRow(this)">Remover</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button onclick="addParticipant()">Adicionar Participante</button>
+
+      <table>
+        <tr>
+          <th>Pauta</th>
+        </tr>
+        <tr>
+          <td>
+            <textarea id="agenda">
+[Título da reunião]
+
+[Descreva aqui os objetivos da reunião e os tópicos que serão discutidos]</textarea
+            >
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th>Notas e Decisões</th>
+        </tr>
+        <tr>
+          <td>
+            <textarea id="notes">
+[Anote aqui as principais discussões, decisões tomadas e pontos importantes da reunião]</textarea
+            >
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th colspan="3">Pendências</th>
+        </tr>
+        <tr>
+          <th>Descrição da Pendência</th>
+          <th>Data para Solução</th>
+          <th>Responsável</th>
+        </tr>
+        <tbody id="pending">
+          <tr>
+            <td><input type="text" placeholder="Descrição da pendência" /></td>
+            <td><input type="date" /></td>
+            <td><input type="text" placeholder="Nome do responsável" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <button onclick="addPending()">Adicionar Pendência</button>
+      <p>
+        <small
+          >* Esta parte deve ser preenchida somente quando houver assuntos que
+          devem ser tratados/encaminhados/respondidos que não ficaram resolvidos
+          durante a reunião.</small
+        >
+      </p>
+
+      <table>
+        <tr>
+          <th>Registro de Presença</th>
+        </tr>
+        <tr>
+          <td>
+            <textarea
+              id="presence"
+              placeholder="* Em reunião presencial, deve-se colocar o nome dos participantes da reunião e uma linha para todos assinarem.
+
+* Em reunião online, deve-se colocar uma foto do ambiente de reunião apresentando a lista de participantes ou imagem dos participantes (sugere-se, um print da tela da reunião)"
+            ></textarea>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      function addParticipant() {
+        const tbody = document.getElementById("participants");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                <td><input type="text" placeholder="Nome completo"></td>
+                <td><input type="email" placeholder="email@exemplo.com"></td>
+                <td><input type="text" placeholder="Função/Papel"></td>
+                <td><button onclick="removeRow(this)">Remover</button></td>
+            `;
+        tbody.appendChild(row);
+      }
+
+      function addPending() {
+        const tbody = document.getElementById("pending");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                <td><input type="text" placeholder="Descrição da pendência"></td>
+                <td><input type="date"></td>
+                <td><input type="text" placeholder="Nome do responsável"></td>
+            `;
+        tbody.appendChild(row);
+      }
+
+      function removeRow(button) {
+        const row = button.closest("tr");
+        const tbody = row.parentNode;
+        if (tbody.children.length > 1) {
+          row.remove();
+        }
+      }
+
+      // Set current date and time as default
+      document.getElementById("date").value = new Date()
+        .toISOString()
+        .split("T")[0];
+      document.getElementById("time").value = new Date()
+        .toTimeString()
+        .slice(0, 5);
+    </script>
+  </body>
+</html>
