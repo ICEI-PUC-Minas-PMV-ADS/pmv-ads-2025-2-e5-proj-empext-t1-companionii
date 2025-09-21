@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ata de Reunião - Editor</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #333;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+      input,
+      textarea {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-family: inherit;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+      .print-btn {
+        background: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+      .print-btn:hover {
+        background: #0056b3;
+      }
+      .control-btn {
+        background: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        margin: 2px;
+        font-size: 12px;
+        border-radius: 3px;
+      }
+      .control-btn.remove {
+        background: #dc3545;
+      }
+      .control-btn:hover {
+        opacity: 0.8;
+      }
+      .table-controls {
+        margin-bottom: 10px;
+      }
+      @media print {
+        .print-btn,
+        .control-btn,
+        .table-controls {
+          display: none;
+        }
+        th:nth-child(4),
+        td:nth-child(4) {
+          display: none;
+        }
+        textarea {
+          overflow: hidden;
+          resize: none;
+        }
+      }
+      .image-upload {
+        position: relative;
+        min-height: 200px;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: border-color 0.3s;
+      }
+      .image-upload:hover {
+        border-color: #007bff;
+      }
+      .image-upload input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+      .upload-text {
+        color: #666;
+        font-size: 16px;
+        pointer-events: none;
+      }
+      .uploaded-image {
+        max-width: 100%;
+        max-height: 300px;
+        display: none;
+      }
+      .participants-table {
+        min-height: 200px;
+      }
+      .participants-table tr {
+        height: 30px;
+      }
+      .agenda-cell {
+        min-height: 150px;
+      }
+      .notes-cell {
+        min-height: 150px;
+      }
+      .pending-table {
+        min-height: 100px;
+      }
+      .presence-cell {
+        height: 200px;
+        padding: 0;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="print-btn" onclick="window.print()">
+        Imprimir/Salvar PDF
+      </button>
+
+      <table style="margin-bottom: 30px">
+        <tr>
+          <td
+            style="
+              width: 150px;
+              text-align: center;
+              border: 1px solid #333;
+              padding: 10px;
+            "
+          >
+            <img
+              src="./logoPuc.png"
+              alt="PUC Minas Logo"
+              style="width: 100px; height: auto"
+            />
+          </td>
+          <td style="text-align: center; border: 1px solid #333; padding: 10px">
+            <div style="font-weight: bold; font-size: 14px; line-height: 1.2">
+              INSTITUTO DE CIÊNCIAS EXATAS E INFORMÁTICA<br />
+              PUC MINAS VIRTUAL<br /><br />
+              CST Análise e Desenvolvimento de Sistemas
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th colspan="4">Ata de Reunião</th>
+        </tr>
+        <tr>
+          <td><strong>Data:</strong></td>
+          <td colspan="3"><input type="date" id="date" value="" /></td>
+        </tr>
+        <tr>
+          <td><strong>Hora:</strong></td>
+          <td colspan="3"><input type="time" id="time" value="" /></td>
+        </tr>
+        <tr>
+          <td><strong>Local:</strong></td>
+          <td colspan="3">
+            <input type="text" id="location" placeholder="Local da reunião" />
+          </td>
+        </tr>
+      </table>
+
+      <div class="table-controls">
+        <button class="control-btn" onclick="addParticipant()">
+          + Adicionar Participante
+        </button>
+      </div>
+
+      <table class="participants-table" id="participantsTable">
+        <tr>
+          <th colspan="4">Participantes</th>
+        </tr>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Papel</th>
+          <th>Ações</th>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Nome completo" /></td>
+          <td><input type="email" placeholder="email@exemplo.com" /></td>
+          <td><input type="text" placeholder="Função/Papel" /></td>
+          <td>
+            <button
+              class="control-btn remove"
+              onclick="removeParticipant(this)"
+            >
+              Remover
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Nome completo" /></td>
+          <td><input type="email" placeholder="email@exemplo.com" /></td>
+          <td><input type="text" placeholder="Função/Papel" /></td>
+          <td>
+            <button
+              class="control-btn remove"
+              onclick="removeParticipant(this)"
+            >
+              Remover
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Nome completo" /></td>
+          <td><input type="email" placeholder="email@exemplo.com" /></td>
+          <td><input type="text" placeholder="Função/Papel" /></td>
+          <td>
+            <button
+              class="control-btn remove"
+              onclick="removeParticipant(this)"
+            >
+              Remover
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th>Pauta</th>
+        </tr>
+        <tr>
+          <td class="agenda-cell">
+            <textarea
+              id="agenda"
+              placeholder="*** Colocar o que será discutido na reunião. É o texto colocado no e-mail de convocação da reunião.
+
+Exemplos:
+- Validação de levantamento de requisitos
+- Validação de sprint 1
+- Homologação de solução completa
+- Discussão sobre infraestrutura de hospedagem da solução"
+            ></textarea>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th>Notas e Decisões</th>
+        </tr>
+        <tr>
+          <td class="notes-cell">
+            <textarea
+              id="notes"
+              placeholder="***Descrever em tópicos o que foi definido na reunião, indicando prazos e os responsáveis para as resoluções que demandarem ações."
+            ></textarea>
+          </td>
+        </tr>
+      </table>
+
+      <div class="table-controls">
+        <button class="control-btn" onclick="addPendency()">
+          + Adicionar Pendência
+        </button>
+      </div>
+
+      <table class="pending-table" id="pendencyTable">
+        <tr>
+          <th colspan="4">Pendências</th>
+        </tr>
+        <tr>
+          <th>Descrição da Pendência</th>
+          <th>Data para Solução</th>
+          <th>Responsável</th>
+          <th>Ações</th>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Descrição da pendência" /></td>
+          <td><input type="date" /></td>
+          <td><input type="text" placeholder="Nome do responsável" /></td>
+          <td>
+            <button class="control-btn remove" onclick="removePendency(this)">
+              Remover
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Descrição da pendência" /></td>
+          <td><input type="date" /></td>
+          <td><input type="text" placeholder="Nome do responsável" /></td>
+          <td>
+            <button class="control-btn remove" onclick="removePendency(this)">
+              Remover
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th>Registro de Presença</th>
+        </tr>
+        <tr>
+          <td class="presence-cell">
+            <div class="image-upload" id="imageUpload">
+              <input type="file" id="imageInput" accept="image/*" />
+              <div class="upload-text" id="uploadText">
+                * Em reunião presencial, deve-se colocar o nome dos
+                participantes da reunião e uma linha para todos assinarem.<br /><br />
+                * Em reunião online, deve-se colocar uma foto do ambiente de
+                reunião apresentando a lista de participantes ou imagem dos
+                participantes (sugere-se, um print da tela da reunião)<br /><br />
+                <strong>Clique aqui para adicionar imagem</strong>
+              </div>
+              <img
+                class="uploaded-image"
+                id="uploadedImage"
+                alt="Registro de presença"
+              />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      document.getElementById("date").value = new Date()
+        .toISOString()
+        .split("T")[0];
+      document.getElementById("time").value = new Date()
+        .toTimeString()
+        .slice(0, 5);
+
+      const imageInput = document.getElementById("imageInput");
+      const uploadText = document.getElementById("uploadText");
+      const uploadedImage = document.getElementById("uploadedImage");
+
+      imageInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            uploadedImage.src = e.target.result;
+            uploadedImage.style.display = "block";
+            uploadText.style.display = "none";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      function addParticipant() {
+        const table = document.getElementById("participantsTable");
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+          <td><input type="text" placeholder="Nome completo" /></td>
+          <td><input type="email" placeholder="email@exemplo.com" /></td>
+          <td><input type="text" placeholder="Função/Papel" /></td>
+          <td><button class="control-btn remove" onclick="removeParticipant(this)">Remover</button></td>
+        `;
+      }
+
+      function removeParticipant(button) {
+        const row = button.closest("tr");
+        const table = document.getElementById("participantsTable");
+        if (table.rows.length > 3) {
+          // Keep at least header + 1 row
+          row.remove();
+        }
+      }
+
+      function addPendency() {
+        const table = document.getElementById("pendencyTable");
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+          <td><input type="text" placeholder="Descrição da pendência" /></td>
+          <td><input type="date" /></td>
+          <td><input type="text" placeholder="Nome do responsável" /></td>
+          <td><button class="control-btn remove" onclick="removePendency(this)">Remover</button></td>
+        `;
+      }
+
+      function removePendency(button) {
+        const row = button.closest("tr");
+        const table = document.getElementById("pendencyTable");
+        if (table.rows.length > 3) {
+          row.remove();
+        }
+      }
+    </script>
+  </body>
+</html>

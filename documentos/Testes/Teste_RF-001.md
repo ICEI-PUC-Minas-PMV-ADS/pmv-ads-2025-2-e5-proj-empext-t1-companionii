@@ -780,4 +780,3 @@
 ![Demonstração dos Testes de Autenticação](../img/video_RF-001.mov)
 
 > **Nota:** [clique aqui para abrir o arquivo](../img/video_RF-001.mov)
-
