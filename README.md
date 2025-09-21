@@ -4,7 +4,7 @@
 
 `Projeto: Extensão Universitária - Microcomputadores e Redes`
 
-`2025/1`
+`2025/2`
 
 O Companion é uma plataforma web inteligente desenvolvida para desenvolvedores freelancers e pequenas equipes que precisam gerenciar múltiplos projetos e clientes de forma eficiente. O sistema combina um kanban temporal (Futuro | Hoje | Passado) com funcionalidades de time tracking, geração automática de relatórios profissionais através de IA, e métricas de produtividade, centralizando toda a gestão diária em uma interface visual intuitiva.
 
