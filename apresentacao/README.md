@@ -1,11 +1,11 @@
 # Etapa 1 - Apresentação da proposta da Solução
+
 - Project Model Canvas:
-<img width="789" height="566" alt="Captura de tela 2025-08-31 214404" src="https://github.com/user-attachments/assets/4c6dd776-5fde-4a80-b12b-2a23fef99085" />
+  <img width="789" height="566" alt="Captura de tela 2025-08-31 214404" src="https://github.com/user-attachments/assets/4c6dd776-5fde-4a80-b12b-2a23fef99085" />
 
 PITCH
 
 Uma plataforma web inteligente para desenvolvedores que unifica a gestão de tarefas, automatiza a criação de relatórios com IA e otimiza a prestação de contas a clientes, transformando a organização diária em produtividade profissional.
-
 
 JUSTIFICATIVAS
 
@@ -24,7 +24,6 @@ Profissionalização da prestação de contas aos clientes.
 Redução do tempo gasto com tarefas administrativas.
 
 Insights sobre a distribuição de tempo entre projetos.
-
 
 PRODUTO
 
@@ -112,18 +111,16 @@ Ferramentas: R$ 0,00 (uso de planos gratuitos para APIs, hospedagem e banco de d
 
 Total Estimado: R$ 0,00.
 
-
 # Etapa 5 - Apresentação da Solução
-- Apresentação para Mostra de Extensão Eixo 5 ADS:
-  * descrição do cliente,
-  * objetivo da aplicação,
-  * telas principais,
-  * pontos positivos e desafios da experiência extensionista,
-  * conclusão da equipe.
-  
-- Vídeo de apresentação da solução:
-  * tamanho do arquivo limitado a 90Mb;
-  * taxa de FPS limitada a 30 quadros por segundo;
-  * resolução HD (720p) ou Full HD (1080p);
-  * formato mp4.
 
+- Apresentação para Mostra de Extensão Eixo 5 ADS:
+  - descrição do cliente,
+  - objetivo da aplicação,
+  - telas principais,
+  - pontos positivos e desafios da experiência extensionista,
+  - conclusão da equipe.
+- Vídeo de apresentação da solução:
+  - tamanho do arquivo limitado a 90Mb;
+  - taxa de FPS limitada a 30 quadros por segundo;
+  - resolução HD (720p) ou Full HD (1080p);
+  - formato mp4.
