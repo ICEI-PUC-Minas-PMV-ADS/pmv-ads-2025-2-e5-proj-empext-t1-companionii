@@ -15,7 +15,7 @@ Isso causa perda de produtividade e falhas na prestação de contas.
 - Mais controle do tempo gasto
 
 ## Imagem do Project Model Canvas
-![Project Model Canvas](project%20model%20canvas.png)
+![Project Model Canvas](Project-Model-Canvas.png)
 
 # Etapa 5 - Apresentação da Solução
 
