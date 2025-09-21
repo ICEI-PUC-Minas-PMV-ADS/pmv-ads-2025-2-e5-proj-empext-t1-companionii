@@ -1,33 +1,35 @@
-import { render, screen } from '@testing-library/react'
-import App from '../App'
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import App from '../App';
+import { useAuthStore } from '../stores/authStore';
 
-describe('App Component', () => {
-  it('should render without crashing', () => {
-    render(<App />)
-  })
+// Mock the auth store
+jest.mock('../stores/authStore');
 
-  it('should render the design system demo', () => {
-    render(<App />)
+// Mock the AppRouter component to avoid routing complexity in unit tests
+jest.mock('../routes/AppRouter', () => {
+  return function MockAppRouter() {
+    return <div data-testid="app-router">App Router</div>;
+  };
+});
 
-    // Check if main sections are rendered
-    expect(screen.getByText('Typography System')).toBeInTheDocument()
-    expect(screen.getByText('Color Palette')).toBeInTheDocument()
-    expect(screen.getByText('Components')).toBeInTheDocument()
-  })
+describe('App', () => {
+  const mockInitialize = jest.fn();
 
-  it('should have proper layout classes', () => {
-    const { container } = render(<App />)
+  beforeEach(() => {
+    useAuthStore.mockReturnValue({
+      initialize: mockInitialize,
+    });
+    jest.clearAllMocks();
+  });
 
-    const appWrapper = container.firstChild
-    expect(appWrapper).toHaveClass('min-h-screen')
-    expect(appWrapper).toHaveClass('bg-gray-50')
-  })
+  test('renders AppRouter', () => {
+    render(<App />);
+    expect(screen.getByTestId('app-router')).toBeInTheDocument();
+  });
 
-  it('should render all button components', () => {
-    render(<App />)
-
-    expect(screen.getByText('Primary Button')).toBeInTheDocument()
-    expect(screen.getByText('Secondary Button')).toBeInTheDocument()
-    expect(screen.getByText('Outline Button')).toBeInTheDocument()
-  })
-})
+  test('calls initialize on mount', () => {
+    render(<App />);
+    expect(mockInitialize).toHaveBeenCalledTimes(1);
+  });
+});

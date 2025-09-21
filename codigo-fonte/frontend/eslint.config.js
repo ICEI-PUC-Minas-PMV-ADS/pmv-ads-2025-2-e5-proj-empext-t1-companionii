@@ -30,7 +30,7 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-      'quotes': ['error', 'single'],
+      quotes: ['error', 'single'],
     },
   },
   {

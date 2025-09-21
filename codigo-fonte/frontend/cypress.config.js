@@ -1,5 +1,5 @@
-import { defineConfig } from 'cypress'
-import { startDevServer } from '@cypress/vite-dev-server'
+import { defineConfig } from 'cypress';
+import { startDevServer } from '@cypress/vite-dev-server';
 
 export default defineConfig({
   e2e: {
@@ -22,8 +22,8 @@ export default defineConfig({
     specPattern: 'src/**/*.cy.{js,jsx,ts,tsx}',
     setupNodeEvents(on) {
       on('dev-server:start', options => {
-        return startDevServer({ options })
-      })
+        return startDevServer({ options });
+      });
     },
   },
   env: {
@@ -31,4 +31,4 @@ export default defineConfig({
       exclude: 'cypress/**/*.*',
     },
   },
-})
+});

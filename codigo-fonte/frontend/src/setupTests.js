@@ -1,4 +1,8 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
+
+// Mock TextEncoder/TextDecoder for React Router
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
@@ -6,7 +10,7 @@ global.IntersectionObserver = class IntersectionObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-}
+};
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
@@ -14,7 +18,7 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-}
+};
 
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -29,4 +33,13 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-})
+});
+
+// Mock window.location
+delete window.location;
+window.location = {
+  assign: jest.fn(),
+  replace: jest.fn(),
+  reload: jest.fn(),
+  href: 'http://localhost:3000',
+};

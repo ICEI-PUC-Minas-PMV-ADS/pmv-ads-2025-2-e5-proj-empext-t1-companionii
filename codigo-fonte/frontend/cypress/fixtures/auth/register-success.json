@@ -1,0 +1,10 @@
+{
+  "message": "User registered successfully",
+  "user": {
+    "id": 2,
+    "name": "João Silva",
+    "email": "joao@example.com",
+    "emailVerified": false,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  }
+}
