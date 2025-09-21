@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@theme {
+  /* Typography */
+  --text-heading-1: 3rem;
+  --text-heading-2: 2.5rem;
+  --text-heading-3: 2rem;
+  --text-heading-4: 1.5rem;
+  --text-heading-5: 1.25rem;
+  --text-body-large: 1.125rem;
+  --text-body-medium: 1rem;
+  --text-body-small: 0.875rem;
+
+  /* Fonts */
+  --font-geist: 'Geist', system-ui, sans-serif;
+
+  /* Colors */
+  --color-secondary: #6b7280;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+}
+
+@layer base {
+  :root {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white text-black;
+  }
+
+  /* Typography Classes */
+  .text-heading-1 {
+    font-size: var(--text-heading-1);
+    font-weight: 700;
+    font-family: var(--font-geist);
+  }
+
+  .text-heading-2 {
+    font-size: var(--text-heading-2);
+    font-weight: 700;
+    font-family: var(--font-geist);
+  }
+
+  .text-heading-3 {
+    font-size: var(--text-heading-3);
+    font-weight: 600;
+    font-family: var(--font-geist);
+  }
+
+  .text-heading-4 {
+    font-size: var(--text-heading-4);
+    font-weight: 600;
+    font-family: var(--font-geist);
+  }
+
+  .text-heading-5 {
+    font-size: var(--text-heading-5);
+    font-weight: 600;
+    font-family: var(--font-geist);
+  }
+
+  .text-body-large {
+    font-size: var(--text-body-large);
+    font-weight: 400;
+  }
+
+  .text-body-medium {
+    font-size: var(--text-body-medium);
+    font-weight: 400;
+  }
+
+  .text-body-small {
+    font-size: var(--text-body-small);
+    font-weight: 400;
+  }
+}
+
+@layer components {
+  /* Button Components */
+  .btn-primary {
+    @apply bg-black text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    background-color: var(--color-secondary);
+    @apply text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors duration-200;
+    font-size: var(--text-body-medium);
+  }
+
+  .btn-outline {
+    @apply border border-black text-black px-6 py-3 rounded-lg text-sm font-medium hover:bg-black hover:text-white transition-colors duration-200;
+  }
+
+  /* Card Components */
+  .card-base {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-xl shadow-lg;
+  }
+
+  /* Input Components */
+  .input-base {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:border-black focus:ring-1 focus:ring-black focus:outline-none transition-colors duration-200;
+  }
+
+  /* Status Components */
+  .status-success {
+    background-color: var(--color-success);
+    @apply text-white px-3 py-1 rounded-full font-medium;
+    font-size: var(--text-body-small);
+  }
+
+  .status-error {
+    background-color: var(--color-error);
+    @apply text-white px-3 py-1 rounded-full font-medium;
+    font-size: var(--text-body-small);
+  }
+
+  .status-warning {
+    background-color: var(--color-warning);
+    @apply text-white px-3 py-1 rounded-full font-medium;
+    font-size: var(--text-body-small);
+  }
+
+  .status-info {
+    background-color: var(--color-info);
+    @apply text-white px-3 py-1 rounded-full font-medium;
+    font-size: var(--text-body-small);
+  }
+}
