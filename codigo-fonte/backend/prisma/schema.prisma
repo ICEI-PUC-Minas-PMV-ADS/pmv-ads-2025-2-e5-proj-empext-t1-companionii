@@ -146,8 +146,7 @@ model Company {
   updatedAt   DateTime @updatedAt
 
   reports      Report[]
-  integrations Integration[]
-  projects     Project[]
+  integrations Integration[]  
   members      CompanyMember[]
 }
 

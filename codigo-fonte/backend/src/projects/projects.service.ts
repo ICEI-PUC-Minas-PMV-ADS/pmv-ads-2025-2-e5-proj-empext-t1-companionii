@@ -9,21 +9,20 @@ export class ProjectsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateProjectDto, createdById: string) {
-    return await this.prisma.project.create({
+    const companyId = await this.ensureCompanyId(dto, createdById); 
+    return this.prisma.project.create({
       data: {
         name: dto.name,
         description: dto.description,
         colorHex: dto.colorHex,
-        companyId : dto.companyId,
+        companyId: companyId!,
         createdById,
       },
     });
   }
 
   async findAll(filter: { companyId?: string }) {
-    const where = filter.companyId
-      ? { companyId: filter.companyId }
-      : undefined;
+    const where = filter.companyId ? { companyId: filter.companyId } : undefined;
 
     return await this.prisma.project.findMany({
       where,
@@ -35,9 +34,7 @@ export class ProjectsService {
   }
 
   async findAllSelect(filter: { companyId?: string }) {
-    const where = filter.companyId
-      ? { companyId: filter.companyId }
-      : undefined;
+    const where = filter.companyId ? { companyId: filter.companyId } : undefined;
 
     return await this.prisma.project.findMany({
       where,
@@ -72,7 +69,7 @@ export class ProjectsService {
         : {}),
     };
 
-    return this.prisma.tag.findMany({
+    return await this.prisma.tag.findMany({
       where,
       select: { id: true, name: true, colorHex: true, createdAt: true },
       orderBy: [{ name: 'asc' }],
@@ -110,21 +107,24 @@ export class ProjectsService {
     };
   }
 
-  // private async ensureCompanyId(dto: CreateProjectDto, createdById: string): Promise<string> {
-  //   if (dto.companyId) return dto.companyId;
-  //   if (dto.clientName) return dto.clientName;
+  private async ensureCompanyId(
+    dto: CreateProjectDto,
+    createdById: string
+  ): Promise<string> {
+    if (dto.companyId) return dto.companyId;
+    if (dto.clientName) return dto.clientName;
 
-  //   throw new BadRequestException(
-  //     'Provide companyId or clientName to associate the project with a company.',
-  //   );
-  // }
+    throw new BadRequestException(
+      'Provide companyId or clientName to associate the project with a company.'
+    );
+  }
 
   async listByProjectsMember(userId: string) {
     if (!userId) {
       throw new BadRequestException('User ID is required');
     }
 
-    return this.prisma.project.findMany({
+    return await this.prisma.project.findMany({
       where: {
         members: {
           some: { userId },
