@@ -1,149 +1,141 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { BoardStatus } from '@prisma/client';
 
 @Injectable()
 export class ProjectsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateProjectDto, userId: string) {
-    return this.prisma.project.create({
+  async create(dto: CreateProjectDto, createdById: string) {
+    return await this.prisma.project.create({
       data: {
-        ...dto,
-        createdById: userId,
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        colorHex: true,
-        companyId: true,
-        createdById: true,
+        name: dto.name,
+        description: dto.description,
+        colorHex: dto.colorHex,
+        companyId : dto.companyId,
+        createdById,
       },
     });
   }
 
   async findAll(filter: { companyId?: string }) {
-    return this.prisma.project.findMany({
-      where: {
-        companyId: filter.companyId || undefined,
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        colorHex: true,
-        companyId: true,
+    const where = filter.companyId
+      ? { companyId: filter.companyId }
+      : undefined;
+
+    return await this.prisma.project.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        _count: { select: { tasks: true } },
       },
     });
   }
 
   async findAllSelect(filter: { companyId?: string }) {
-    return this.prisma.project.findMany({
-      where: {
-        companyId: filter.companyId || undefined,
-      },
+    const where = filter.companyId
+      ? { companyId: filter.companyId }
+      : undefined;
+
+    return await this.prisma.project.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
       select: {
         id: true,
         name: true,
         companyId: true,
+        _count: { select: { tasks: true } },
       },
     });
   }
 
   async findOne(id: string) {
-    return this.prisma.project.findUnique({
+    return await this.prisma.project.findUnique({
       where: { id },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        colorHex: true,
-        companyId: true,
+      include: {
+        members: {
+          include: {
+            user: { select: { id: true, name: true, imageUrl: true } },
+          },
+        },
       },
+    });
+  }
+
+  async listTags(projectId: string, opts?: { q?: string; take?: number }) {
+    const where = {
+      projectId,
+      ...(opts?.q
+        ? { name: { contains: opts.q, mode: 'insensitive' as const } }
+        : {}),
+    };
+
+    return this.prisma.tag.findMany({
+      where,
+      select: { id: true, name: true, colorHex: true, createdAt: true },
+      orderBy: [{ name: 'asc' }],
+      take: opts?.take ?? 20,
     });
   }
 
   async update(id: string, dto: UpdateProjectDto) {
-    return this.prisma.project.update({
-      where: { id },
-      data: {
-        ...dto,
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        colorHex: true,
-        companyId: true,
-      },
-    });
+    return await this.prisma.project.update({ where: { id }, data: dto });
   }
 
   async remove(id: string) {
-    return this.prisma.project.delete({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
+    return await this.prisma.project.delete({ where: { id } });
   }
+
+  async metrics(projectId: string) {
+    const byStatus = await this.prisma.task.groupBy({
+      by: ['status'],
+      where: { projectId },
+      _count: { _all: true },
+      _sum: { actualMin: true },
+    });
+
+    const total = byStatus.reduce((s, r) => s + r._count._all, 0);
+    const done =
+      byStatus.find((r) => r.status === BoardStatus.DONE)?._count._all ?? 0;
+    const minutes = byStatus.reduce((s, r) => s + (r._sum.actualMin ?? 0), 0);
+
+    return {
+      totalTasks: total,
+      doneTasks: done,
+      totalHours: +(minutes / 60).toFixed(2),
+      progress: total ? Math.round((done / total) * 100) : 0,
+      byStatus,
+    };
+  }
+
+  // private async ensureCompanyId(dto: CreateProjectDto, createdById: string): Promise<string> {
+  //   if (dto.companyId) return dto.companyId;
+  //   if (dto.clientName) return dto.clientName;
+
+  //   throw new BadRequestException(
+  //     'Provide companyId or clientName to associate the project with a company.',
+  //   );
+  // }
 
   async listByProjectsMember(userId: string) {
     if (!userId) {
-      throw new Error('User ID is required');
+      throw new BadRequestException('User ID is required');
     }
 
     return this.prisma.project.findMany({
       where: {
-        members: { some: { userId } },
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        colorHex: true,
-        companyId: true,
-      },
-    });
-  }
-
-  async metrics(projectId: string) {
-    const project = await this.prisma.project.findUnique({
-      where: { id: projectId },
-      select: {
-        id: true,
-        name: true,
-        companyId: true,
-      },
-    });
-
-    return {
-      projectId: project.id,
-      projectName: project.name,
-      companyId: project.companyId,
-    };
-  }
-
-  async listTags(projectId: string, options: { q?: string; take?: number }) {
-    return this.prisma.projectMember.findMany({
-      where: {
-        projectId,
-      },
-      select: {
-        tags: {
-          where: options.q
-            ? { tag: { name: { contains: options.q } } }
-            : undefined,
-          take: options.take || 20,
-          select: {
-            tag: {
-              select: { id: true, name: true },
-            },
-          },
+        members: {
+          some: { userId },
         },
+      },
+      select: {
+        id: true,
+        name: true,
+        colorHex: true,
+        description: true,
+        companyId: true,
       },
     });
   }
