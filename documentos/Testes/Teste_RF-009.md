@@ -51,10 +51,10 @@
     <td><strong>Responsável pela funcionalidade</strong></td>
     <td width="430">
       Desenvolvimento: William da Silva Rodrigues<br>
-      Teste: Gustavo Luiz Andrade Costa
+      Teste: Adriana Pereira Nascimento
     </td>
     <td width="100"><strong>Data do Teste</strong></td>
-    <td width="150">24/11/2025</td>
+    <td width="150">23/11/2025</td>
   </tr>
   <tr>
     <td width="170"><strong>Comentário</strong></td>
