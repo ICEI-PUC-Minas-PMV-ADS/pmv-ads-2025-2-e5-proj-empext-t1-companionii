@@ -4,29 +4,27 @@
 
 <table>
   <tr>
-    <th colspan="6" width="1000">CT-RF-01101<br>Exportação de Relatório em PDF</th>
+    <th colspan="6" width="1000">CT-RF-01101<br>Disponibilidade da Ferramenta de Exportação</th>
   </tr>
   <tr>
     <td width="170"><strong>Critérios de êxito</strong></td>
     <td colspan="5">
-      Ao clicar no botão de "Exportar PDF" ou realizar a impressão, o sistema deve gerar um arquivo 
-      <code>application/pdf</code> legível. O layout deve ser estruturado profissionalmente.
+      O sistema deve disponibilizar uma opção clara (Botão ou Menu de Impressão) para exportar os dados da tela atual. A ação deve ser responsiva e iniciar o processo de geração do documento.
     </td>
   </tr>
   <tr>
-    <td><strong>Responsável pela funcionalidade (desenvolvimento e teste)</strong></td>
+    <td><strong>Responsável pela funcionalidade</strong></td>
     <td width="430">
       Desenvolvimento: Enzo Gomes Azevedo<br>
-      Teste: Adriana Pereira Nascimento
+      Teste: Gustavo Luiz Andrade Costa
     </td>
     <td width="100"><strong>Data do Teste</strong></td>
-    <td width="150">23/11/2025</td>
+    <td width="150">24/11/2025</td>
   </tr>
   <tr>
     <td width="170"><strong>Comentário</strong></td>
     <td colspan="5">
-      Funcionalidade validada. O arquivo PDF foi gerado corretamente.
-      O layout do documento preserva a formatação visual e os dados conferem com a visualização em tela.
+      Funcionalidade disponível. O comando de exportação foi acionado e o navegador reconheceu a solicitação imediatamente, preparando o arquivo para download/visualização sem travamentos.
     </td>
   </tr>
   <tr>
@@ -39,12 +37,43 @@
 
 <br>
 
+<table>
+  <tr>
+    <th colspan="6" width="1000">CT-RF-01102<br>Validação Visual e de Conteúdo do Arquivo PDF</th>
+  </tr>
+  <tr>
+    <td width="170"><strong>Critérios de êxito</strong></td>
+    <td colspan="5">
+      O arquivo gerado (PDF) deve abrir corretamente em leitores padrão. O layout deve ser profissional, sem cortes de texto, e os dados apresentados devem ser idênticos aos filtros aplicados na tela do sistema.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Responsável pela funcionalidade</strong></td>
+    <td width="430">
+      Desenvolvimento: Enzo Gomes Azevedo<br>
+      Teste: Gustavo Luiz Andrade Costa
+    </td>
+    <td width="100"><strong>Data do Teste</strong></td>
+    <td width="150">24/11/2025</td>
+  </tr>
+  <tr>
+    <td width="170"><strong>Comentário</strong></td>
+    <td colspan="5">
+      Teste de integridade aprovado. O PDF gerado possui formatação limpa e estruturada. Caracteres especiais (acentuação) foram renderizados corretamente e os gráficos/tabelas estão legíveis.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="6" align="center"><strong>Evidência</strong></td>
+  </tr>
+  <tr>
+    <td colspan="6" align="center"><img src="../img/CT-RF-00011.png" alt="CT-RF-01102 Evidence"></td>
+  </tr>
+</table>
+
+<br>
+
 ---
 
 ## Observações Técnicas
-
-**Endpoints testados:**
-- `GET /api/reports/export/pdf` (ou geração via cliente)
-
-**Componentes testados:**
-- `ExportButton` (`codigo-fonte/frontend/src/components/common/ExportButton.jsx`)
+**Endpoints testados:** `GET /api/reports/export/pdf`
+**Componentes testados:** `ExportButton`
